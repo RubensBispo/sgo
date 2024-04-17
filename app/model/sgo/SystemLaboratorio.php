@@ -1,6 +1,6 @@
 <?php
 
-class laboratorio extends TRecord
+class SystemLaboratorio extends TRecord
 {
     const TABLENAME = 'laboratorio';
     const PRIMARYKEY= 'id';
@@ -8,7 +8,6 @@ class laboratorio extends TRecord
     
     // use SystemChangeLogTrait;
     
-
 
     /**
      * Constructor method

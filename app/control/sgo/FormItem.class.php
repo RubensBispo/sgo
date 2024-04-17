@@ -12,13 +12,13 @@ class FormItem extends TPage
     {
         parent::__construct();
         
-        $this->form = new BootstrapFormBuilder('form_builder');
+        $this->form = new BootstrapFormBuilder('form_System_labs');
         $this->form->setFormTitle('Cadastro de Itens');
         $this->form->setFieldSizes('100%');
         $this->form->generateAria(); // automatic aria-label
        // $this->form->appendPage('Item');
         
-        $id         = new TEntry('id');
+        $id           = new TEntry('id');
         $name         = new TEntry('nome');
         $descricao    = new TEntry('descricao');
         $quantidade   = new TEntry('quantidade');        
@@ -69,13 +69,40 @@ class FormItem extends TPage
     /**
      * Post data
      */
-    public function onSend($param)
+    public function onSave($param)
     {
-        $data = $this->form->getData();
-        $this->form->setData($data);
+        $ini  = AdiantiApplicationConfig::get();
         
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
+        try
+        {
+            // open a transaction with database 'permission'
+            TTransaction::open('sgo');
+            
+            $data = $this->form->getData();
+            $this->form->setData($data);
+            
+            $object = new ;
+            $object->fromArray( (array) $data);
+            $senha = $object->password;
+            
+            
+            
+            $data = new stdClass;
+            $data->id = $object->id;
+            TForm::sendData('form_System_user', $data);
+            
+            // close the transaction
+            TTransaction::close();
+            
+            //$pos_action = new TAction(['SystemUserList', 'onReload']);
+            
+            // shows the success message
+            new TMessage('info', TAdiantiCoreTranslator::translate('Record saved'), $pos_action);
+        }
+        catch (Exception $e) // in case of exception
+        {
+            new TMessage('error', $e->getMessage());
+            TTransaction::rollback();
+        }
     }
 }
