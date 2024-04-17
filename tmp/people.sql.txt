@@ -1,0 +1,2 @@
+INSERT INTO people (id,name) VALUES (1,'Unit A - person 1');
+INSERT INTO people (id,name) VALUES (2,'Unit A - person 2');
